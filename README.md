@@ -9,7 +9,8 @@ Beholder requies Python >= 3.8.2.
 
 # Installation (for developers)
 
-        sudo apt install python3.8-venv
-        python3 -m venv env
-        source env/bin/activate
-        pip3 install -r requirements.txt
+    sudo apt install python3.8-venv
+    python3 -m venv env
+    source env/bin/activate
+    pip3 install -r requirements.txt
+
