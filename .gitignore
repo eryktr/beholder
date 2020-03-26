@@ -4,3 +4,5 @@ env
 venv
 *.pyc
 tmp
+.coverage
+.mypy_cache
