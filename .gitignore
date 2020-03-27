@@ -6,3 +6,4 @@ venv
 tmp
 .coverage
 .mypy_cache
+*.txt
