@@ -44,7 +44,7 @@ def test_file_valid_valid_file(monkeypatch):
 
 def test_file_valid_not_a_file(monkeypatch):
     monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: False)
-    with pytest.raises(err.NotAFileError):
+    with pytest.raises(FileNotFoundError):
         file_valid(pathlib.Path())
 
 
