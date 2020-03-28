@@ -5,7 +5,7 @@ cd $DIR/..;
 export PYTHONPATH=$(pwd);
 
 echo "First check if code is properly formatted...";
-flake8 beholder tests;
+flake8 --config="$PYTHONPATH/setup.cfg" beholder tests;
 ok=$?;
 if [ $ok -ne 0 ]; then
     echo "Code is not formatted properly. Please fix it and come back to me.";
