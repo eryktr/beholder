@@ -1,18 +1,19 @@
 from itertools import permutations
-from beholder.cfg_reader import protocol_is_correct
-from beholder.cfg_reader import find_incorrect_websites
+from beholder.cfg_reader import (
+    protocol_correct, find_incorrect_websites
+)
 
 
-def test_protocol_is_correct_ok():
+def test_protocol_correct_ok():
     rand_comb = [''.join(p) for p in permutations('eryktr')]
     for comb in rand_comb:
-        assert protocol_is_correct(comb.join(["https://", ".pl"]))
+        assert protocol_correct(comb.join(["https://", ".pl"]))
 
 
-def test_protocol_is_correct_fail():
+def test_protocol_correct_fail():
     rand_comb = [''.join(p) for p in permutations('eryktr')]
     for comb in rand_comb:
-        assert not(protocol_is_correct(comb.join(".pl")))
+        assert not(protocol_correct(comb.join(".pl")))
 
 
 def test_find_incorrect_websites_bad():
