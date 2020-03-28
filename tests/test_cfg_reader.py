@@ -1,6 +1,5 @@
 import pathlib
 
-import beholder.cfg_reader as cfg_reader
 from beholder.cfg_reader import find_incorrect_websites, protocol_correct, file_valid
 
 
@@ -26,18 +25,18 @@ def test_find_incorect_websites_good():
 
 def test_file_valid_invalid_file(monkeypatch):
     txt = "http://address.dom\nhttp://ad.do\n\nnotaddr\n\n"
-    monkeypatch.setattr(cfg_reader.Path, 'read_text', lambda path: txt)
-    monkeypatch.setattr(cfg_reader.Path, 'is_file', lambda path: True)
+    monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
+    monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
     assert not file_valid(pathlib.Path())
 
 
 def test_file_valid_valid_file(monkeypatch):
     txt = "http://address.dom\nhttp://ad.do\n\n\n"
-    monkeypatch.setattr(cfg_reader.Path, 'is_file', lambda path: True)
-    monkeypatch.setattr(cfg_reader.Path, 'read_text', lambda path: txt)
+    monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
+    monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
     assert file_valid(pathlib.Path())
 
 
 def test_file_valid_not_a_file(monkeypatch):
-    monkeypatch.setattr(cfg_reader.Path, 'is_file', lambda path: False)
+    monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: False)
     assert not file_valid(pathlib.Path())
