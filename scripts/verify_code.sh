@@ -14,7 +14,7 @@ fi
 echo "--------------------------------------------------------------------------"
 
 echo "Now it's time to check if the unit tests are passing...";
-pytest --durations=$DURATIONS --cov="$PYTHONPATH/beholder" --cov-config="$PYTHONPATH/.coveragerc" --cov-report term-missing;
+pytest -vv --durations=$DURATIONS --cov="$PYTHONPATH/beholder" --cov-config="$PYTHONPATH/.coveragerc" --cov-report term-missing;
 
 ok=$?;
 if [ $ok -ne 0 ]; then
