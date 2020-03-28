@@ -33,5 +33,6 @@ def test_argparser_succeeds(args):
 def test_argparser_default_values():
     args = ["--output", "output.txt", "config.cfg"]
     opts = argparser.parse(args)
+
     assert opts.time == const.DEFAULT_T
     assert opts.show_diffs == const.DEFAULT_D
