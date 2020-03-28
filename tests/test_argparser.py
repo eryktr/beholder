@@ -21,7 +21,7 @@ def test_argparser_fails(args):
     ["--output", "output.txt", "-d", "--time", "10", "config.cfg"],
     ["--output", "output.txt", "--show_diffs", "--time", "10", "config.cfg"],
 ])
-def test_argparser_succeeds_short(args):
+def test_argparser_succeeds(args):
     opts = argparser.parse(args)
 
     assert opts.time == 10
