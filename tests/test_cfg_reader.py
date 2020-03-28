@@ -1,6 +1,7 @@
 import pathlib
-
-from beholder.cfg_reader import find_incorrect_websites, protocol_correct, file_valid
+import pytest
+from beholder.cfg_reader import protocol_correct, file_valid
+import beholder.errors as err
 
 
 def test_protocol_is_correct_ok():
@@ -11,23 +12,27 @@ def test_protocol_is_correct_fail():
     assert not protocol_correct("addr")
 
 
-def test_find_incorrect_websites_bad():
-    bad_website = "eryktrzeciakiewicz.pl"
-    incorrect_list = [bad_website] * 2
-    assert len(find_incorrect_websites(incorrect_list)) == 2
+def test_find_incorrect_websites_bad(monkeypatch):
+    txt = "https://eryktr.pl\neryktr.pl\n"
+    monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
+    monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
+    with pytest.raises(err.IncorrectWebsitesError):
+        file_valid(pathlib.Path())
 
 
-def test_find_incorect_websites_good():
-    good_website = "https://eryktrzeciakiewicz.pl"
-    correct_list = [good_website] * 2
-    assert not (len(find_incorrect_websites(correct_list)))
+def test_find_incorrect_websites_good(monkeypatch):
+    txt = "https://eryktr.pl\nhttps://eryktr.pl\n"
+    monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
+    monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
+    assert file_valid(pathlib.Path())
 
 
 def test_file_valid_invalid_file(monkeypatch):
     txt = "http://address.dom\nhttp://ad.do\n\nnotaddr\n\n"
     monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
     monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
-    assert not file_valid(pathlib.Path())
+    with pytest.raises(err.IncorrectWebsitesError):
+        file_valid(pathlib.Path())
 
 
 def test_file_valid_valid_file(monkeypatch):
@@ -39,4 +44,11 @@ def test_file_valid_valid_file(monkeypatch):
 
 def test_file_valid_not_a_file(monkeypatch):
     monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: False)
-    assert not file_valid(pathlib.Path())
+    with pytest.raises(err.NotAFileError):
+        file_valid(pathlib.Path())
+
+
+def test_file_valid_path_not_exists(monkeypatch):
+    monkeypatch.setattr(pathlib.Path, 'exists', lambda path: False)
+    with pytest.raises(err.PathNotFoundError):
+        file_valid(pathlib.Path())
