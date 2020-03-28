@@ -3,27 +3,19 @@ from pathlib import Path
 
 
 class PathNotFoundError(Exception):
-    def __init__(self, arg: Path):
-        if arg:
-            self.path = arg
+    path: Path
 
-    def __str__(self):
-        return f"{self.path} does not exist."
-
-
-class NotAFileError(Exception):
-    def __init__(self, arg: Path):
-        if arg:
-            self.path = arg
-
-    def __str__(self):
-        return f"{self.path} is not a file."
+    def __init__(self, path: Path):
+        self.path = path
+        msg = f"{path} not found"
+        self.msg = msg
+        super().__init__(self.msg)
 
 
 class IncorrectWebsitesError(Exception):
-    def __init__(self, args: List[str]):
-        if args:
-            self.websites = args
+    sites: List[str]
+    msg = "Some of the websites you provided are invalid"
 
-    def __message__(self):
-        return self.websites
+    def __init__(self, sites: List[str]):
+        self.sites = sites
+        super().__init__(self.msg)

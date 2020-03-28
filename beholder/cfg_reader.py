@@ -16,7 +16,7 @@ def file_valid(path: Path) -> bool:
     if not path.exists():
         raise err.PathNotFoundError(path)
     elif not path.is_file():
-        raise err.NotAFileError(path)
+        raise FileNotFoundError(path)
     sites = _parse_file(path)
     bad_websites = find_incorrect_websites(sites)
     if len(bad_websites):
