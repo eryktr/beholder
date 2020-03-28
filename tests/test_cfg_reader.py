@@ -1,8 +1,7 @@
 import pathlib
 
 import beholder.cfg_reader as cfg_reader
-from beholder.cfg_reader import find_incorrect_websites
-from beholder.cfg_reader import protocol_correct, file_valid
+from beholder.cfg_reader import find_incorrect_websites, protocol_correct, file_valid
 
 
 def test_protocol_is_correct_ok():
