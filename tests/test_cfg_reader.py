@@ -1,20 +1,16 @@
-from itertools import permutations
-from beholder.cfg_reader import protocol_is_correct, file_is_valid
-from beholder.cfg_reader import find_incorrect_websites
 import pathlib
+
 import beholder.cfg_reader as cfg_reader
+from beholder.cfg_reader import find_incorrect_websites
+from beholder.cfg_reader import protocol_correct, file_valid
 
 
 def test_protocol_is_correct_ok():
-    rand_comb = [''.join(p) for p in permutations('eryktr')]
-    for comb in rand_comb:
-        assert protocol_is_correct(comb.join(["https://", ".pl"]))
+    assert protocol_correct("http://website.loc")
 
 
 def test_protocol_is_correct_fail():
-    rand_comb = [''.join(p) for p in permutations('eryktr')]
-    for comb in rand_comb:
-        assert not (protocol_is_correct(comb.join(".pl")))
+    assert not protocol_correct("addr")
 
 
 def test_find_incorrect_websites_bad():
@@ -33,16 +29,16 @@ def test_file_valid_invalid_file(monkeypatch):
     txt = "http://address.dom\nhttp://ad.do\n\nnotaddr\n\n"
     monkeypatch.setattr(cfg_reader.Path, 'read_text', lambda path: txt)
     monkeypatch.setattr(cfg_reader.Path, 'is_file', lambda path: True)
-    assert not file_is_valid(pathlib.Path())
+    assert not file_valid(pathlib.Path())
 
 
 def test_file_valid_valid_file(monkeypatch):
     txt = "http://address.dom\nhttp://ad.do\n\n\n"
     monkeypatch.setattr(cfg_reader.Path, 'is_file', lambda path: True)
     monkeypatch.setattr(cfg_reader.Path, 'read_text', lambda path: txt)
-    assert file_is_valid(pathlib.Path())
+    assert file_valid(pathlib.Path())
 
 
 def test_file_valid_not_a_file(monkeypatch):
     monkeypatch.setattr(cfg_reader.Path, 'is_file', lambda path: False)
-    assert not file_is_valid(pathlib.Path())
+    assert not file_valid(pathlib.Path())
