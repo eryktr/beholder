@@ -1,0 +1,2 @@
+DEFAULT_T = 1
+DEFAULT_D = False
