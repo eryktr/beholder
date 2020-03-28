@@ -9,7 +9,7 @@ _O_HELP = "File where the session should be dumped."
 _D_HELP = "Display not only if something changes but also what changes."
 
 
-def path(x):
+def path(x: str) -> Path:
     return Path(x)
 
 
