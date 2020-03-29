@@ -1,6 +1,6 @@
 import pathlib
 import pytest
-from beholder.cfg_reader import protocol_correct, validate_file
+from beholder.cfg_reader import protocol_correct, validate_websites
 import beholder.errors as err
 
 
@@ -17,24 +17,12 @@ def test_find_incorrect_websites_bad(monkeypatch):
     monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
     monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
     with pytest.raises(err.IncorrectWebsitesError):
-        validate_file(pathlib.Path())
+        validate_websites(pathlib.Path())
 
 
-def test_validate_file_invalid_file(monkeypatch):
+def test_validate_websites_invalid_file(monkeypatch):
     txt = "http://address.dom\nhttp://ad.do\n\nnotaddr\n\n"
     monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
     monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
     with pytest.raises(err.IncorrectWebsitesError):
-        validate_file(pathlib.Path())
-
-
-def test_validate_file_not_a_file(monkeypatch):
-    monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: False)
-    with pytest.raises(FileNotFoundError):
-        validate_file(pathlib.Path())
-
-
-def test_validate_file_path_not_exists(monkeypatch):
-    monkeypatch.setattr(pathlib.Path, 'exists', lambda path: False)
-    with pytest.raises(err.PathNotFoundError):
-        validate_file(pathlib.Path())
+        validate_websites(pathlib.Path())

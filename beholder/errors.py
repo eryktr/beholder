@@ -1,14 +1,4 @@
 from typing import List
-from pathlib import Path
-
-
-class PathNotFoundError(Exception):
-    path: Path
-    msg: str
-
-    def __init__(self, path: Path):
-        self.msg = f"{path} not found"
-        super().__init__(self.msg)
 
 
 class IncorrectWebsitesError(Exception):
