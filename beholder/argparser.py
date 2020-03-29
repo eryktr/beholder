@@ -1,4 +1,4 @@
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
 from typing import List
 from pathlib import Path
 import beholder.const as const
@@ -14,7 +14,7 @@ def path(x: str) -> Path:
 
 
 def parse(args: List[str]) -> Namespace:
-    parser = ArgumentParser()
+    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument("config_path", type=path, help=_CFG_HELP)
     parser.add_argument("-t", "--time", type=int, default=const.DEFAULT_T, help=_T_HELP,
                         required=False)
