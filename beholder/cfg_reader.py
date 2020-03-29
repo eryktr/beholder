@@ -18,11 +18,11 @@ def validate_websites(path: Path) -> None:
         raise err.IncorrectWebsitesError(inc_sites)
 
 
-def uniq(lst: List[str]) -> List[str]:
+def _parse_file(path: Path) -> List[str]:
+    return _uniq([line for line in path.read_text().split('\n') if line])
+
+
+def _uniq(lst: List[str]) -> List[str]:
     seen = set()
     seen_add = seen.add
     return [seen_add(elem) or elem for elem in lst if elem not in seen]
-
-
-def _parse_file(path: Path) -> List[str]:
-    return uniq([line for line in path.read_text().split('\n') if line])
