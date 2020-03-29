@@ -1,2 +1,3 @@
-DEFAULT_T = 1
+DEFAULT_T = 5
 DEFAULT_D = False
+T_MIN = 1
