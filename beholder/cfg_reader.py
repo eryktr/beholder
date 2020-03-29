@@ -8,20 +8,18 @@ def protocol_correct(addr: str) -> bool:
 
 
 def find_incorrect_websites(sites: List[str]) -> List[str]:
-    inc_websites = [site for site in sites if not protocol_correct(site)]
-    return inc_websites
+    return [site for site in sites if not protocol_correct(site)]
 
 
-def file_valid(path: Path) -> bool:
+def validate_file(path: Path) -> None:
     if not path.exists():
         raise err.PathNotFoundError(path)
     elif not path.is_file():
         raise FileNotFoundError(path)
     sites = _parse_file(path)
-    bad_websites = find_incorrect_websites(sites)
-    if len(bad_websites):
-        raise err.IncorrectWebsitesError(bad_websites)
-    return True
+    inc_sites = find_incorrect_websites(sites)
+    if inc_sites:
+        raise err.IncorrectWebsitesError(inc_sites)
 
 
 def _parse_file(path: Path) -> List[str]:

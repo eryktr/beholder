@@ -4,17 +4,16 @@ from pathlib import Path
 
 class PathNotFoundError(Exception):
     path: Path
+    msg: str
 
     def __init__(self, path: Path):
-        self.path = path
-        msg = f"{path} not found"
-        self.msg = msg
+        self.msg = f"{path} not found"
         super().__init__(self.msg)
 
 
 class IncorrectWebsitesError(Exception):
     sites: List[str]
-    msg = "Some of the websites you provided are invalid"
+    msg: str = "Some of the websites you provided are invalid"
 
     def __init__(self, sites: List[str]):
         self.sites = sites
