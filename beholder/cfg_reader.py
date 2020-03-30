@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Set
 import beholder.errors as err
 
 
@@ -23,6 +23,6 @@ def _parse_file(path: Path) -> List[str]:
 
 
 def _uniq(lst: List[str]) -> List[str]:
-    seen = set()
+    seen: Set[str] = set()
     seen_add = seen.add
     return [seen_add(elem) or elem for elem in lst if elem not in seen]

@@ -22,6 +22,7 @@ pytest -vv --durations=$DURATIONS --cov="$PYTHONPATH/beholder" --cov-config="$PY
 ok=$?;
 if [ $ok -ne 0 ]; then
     echo "Unit tests failed. Please fix them..."
+    exit 1;
 fi
 echo "--------------------------------------------------------------------------"
 
@@ -30,6 +31,7 @@ mypy --ignore-missing-imports "$PYTHONPATH/beholder"
 ok=$?;
 if [ $ok -ne 0 ]; then
   echo "There are some problems with types. Fix them and come back..."
+  exit 1;
 fi
 echo "--------------------------------------------------------------------------"
 
