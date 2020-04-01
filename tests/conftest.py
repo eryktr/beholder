@@ -18,6 +18,6 @@ def correct_cfgfile_paths():
 
 
 @pytest.fixture
-def incorrect_cfgfile_paths():
+def incorrect_cfgfile_path():
     incorrect = Path("tests") / "incorrect.txt"
     return incorrect
