@@ -11,7 +11,7 @@ from . import utils as u
     u.mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "correct.txt")]),
     u.mkargv([str(Path("tests") / "correct.txt")]),
     u.mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "correct2.txt")]),
-    u.mkargv([str(Path("tests") / "correct2.txt")])
+    u.mkargv([str(Path("tests") / "correct2.txt")]),
 ])
 def test_frontend_correct(argv, correct_cfgfile_paths):
     correct, correct_2 = correct_cfgfile_paths
