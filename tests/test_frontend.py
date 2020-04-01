@@ -4,14 +4,14 @@ import beholder.cfg_reader as cfg_reader
 import beholder.opts_validator as validator
 import beholder.errors as err
 from pathlib import Path
-from . import utils as u
+from tests.utils import mkargv
 
 
 @pytest.mark.parametrize("argv", [
-    u.mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "correct.txt")]),
-    u.mkargv([str(Path("tests") / "correct.txt")]),
-    u.mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "correct2.txt")]),
-    u.mkargv([str(Path("tests") / "correct2.txt")]),
+    mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "correct.txt")]),
+    mkargv([str(Path("tests") / "correct.txt")]),
+    mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "correct2.txt")]),
+    mkargv([str(Path("tests") / "correct2.txt")]),
 ])
 def test_frontend_correct(argv, correct_cfgfile_paths):
     correct, correct_2 = correct_cfgfile_paths
@@ -22,8 +22,8 @@ def test_frontend_correct(argv, correct_cfgfile_paths):
 
 
 @pytest.mark.parametrize("argv", [
-    u.mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "incorrect.txt")]),
-    u.mkargv([str(Path("tests") / "incorrect.txt")]),
+    mkargv(["-t", "100", "-o", "out.txt", "-d", str(Path("tests") / "incorrect.txt")]),
+    mkargv([str(Path("tests") / "incorrect.txt")]),
 ])
 def test_frontend_incorrect(argv, incorrect_cfgfile_path):
     incorrect = incorrect_cfgfile_path
