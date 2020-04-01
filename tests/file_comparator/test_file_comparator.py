@@ -2,7 +2,7 @@ import pytest
 
 from beholder.file_comparator.comparators import FileComparator
 from beholder.file_comparator.comparison_results import (
-    SimpleComparisonResult, WithDiffsComparisonResult
+    SimpleComparisonResult, WithDiffsComparisonResult,
 )
 from beholder.file_comparator.comparison_types import SimpleComparison, WithDiffsComparison
 
@@ -106,5 +106,5 @@ def test_with_diffs_comparator_nonequal_files(nonequal_files_pair):
         '     <html>',
         '         <head>',
         '+            <title>Java1.7 + AWT -> Graphics Designer Starter Kit </title>',
-        '         </head>', '         <body>', '         </body>'
+        '         </head>', '         <body>', '         </body>',
     ]
