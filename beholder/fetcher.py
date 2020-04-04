@@ -5,7 +5,6 @@ import requests
 
 
 class WebFetcher:
-
     def fetch(self, addr: str, path: Path) -> None:
         res = requests.get(addr)
         if res.status_code not in const.ALLOWED_STATCODES:
