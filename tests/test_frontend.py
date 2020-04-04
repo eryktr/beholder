@@ -17,8 +17,8 @@ def test_frontend_correct(argv, correct_cfgfile_paths):
     correct, correct_2 = correct_cfgfile_paths
     opts = argparser.parse(argv[1:])
     validator.validate_opts(opts)
-    cfg_reader.validate_websites(correct)
-    cfg_reader.validate_websites(correct_2)
+    cfg_reader.get_valid_websites(correct)
+    cfg_reader.get_valid_websites(correct_2)
 
 
 @pytest.mark.parametrize("argv", [
@@ -30,4 +30,4 @@ def test_frontend_incorrect(argv, incorrect_cfgfile_path):
     opts = argparser.parse(argv[1:])
     validator.validate_opts(opts)
     with pytest.raises(err.IncorrectWebsitesError):
-        cfg_reader.validate_websites(incorrect)
+        cfg_reader.get_valid_websites(incorrect)

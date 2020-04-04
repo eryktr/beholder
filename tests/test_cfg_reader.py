@@ -1,6 +1,6 @@
 import pathlib
 import pytest
-from beholder.cfg_reader import protocol_correct, validate_websites
+from beholder.cfg_reader import protocol_correct, get_valid_websites
 import beholder.errors as err
 
 
@@ -17,12 +17,12 @@ def test_find_incorrect_websites_bad(monkeypatch):
     monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
     monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
     with pytest.raises(err.IncorrectWebsitesError):
-        validate_websites(pathlib.Path())
+        get_valid_websites(pathlib.Path())
 
 
-def test_validate_websites_invalid_file(monkeypatch):
+def test_get_valid_websites_very_bad(monkeypatch):
     txt = "http://address.dom\nhttp://ad.do\n\nnotaddr\n\n"
     monkeypatch.setattr(pathlib.Path, 'read_text', lambda path: txt)
     monkeypatch.setattr(pathlib.Path, 'is_file', lambda path: True)
     with pytest.raises(err.IncorrectWebsitesError):
-        validate_websites(pathlib.Path())
+        get_valid_websites(pathlib.Path())
