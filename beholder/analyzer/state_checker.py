@@ -24,6 +24,7 @@ class StateChecker:
         self.fetcher = WebFetcher()
 
     def run(self) -> None:
+        self._download_websites()
         while 1:
             for site in self.sites:
                 latest_path = self.file_manager.latest_path(site)
@@ -32,4 +33,10 @@ class StateChecker:
                 res = self.comparator.compare(latest_path, chall_path)
                 if not res.equal:
                     self.reporter.report(site, res)
+                    latest_path.write_text(chall_path.read_text())
             time.sleep(self.time)
+
+    def _download_websites(self):
+        for site in self.sites:
+            path = self.file_manager.latest_path(site)
+            self.fetcher.fetch(site, path)
