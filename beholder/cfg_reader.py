@@ -11,14 +11,13 @@ def find_incorrect_websites(sites: List[str]) -> List[str]:
     return [site for site in sites if not protocol_correct(site)]
 
 
-def validate_websites(path: Path) -> None:
-    sites = _parse_file(path)
+def validate_websites(sites: List[str]) -> None:
     inc_sites = find_incorrect_websites(sites)
     if inc_sites:
         raise err.IncorrectWebsitesError(inc_sites)
 
 
-def _parse_file(path: Path) -> List[str]:
+def parse_file(path: Path) -> List[str]:
     return _uniq([line for line in path.read_text().split('\n') if line])
 
 
