@@ -39,4 +39,3 @@ class StateChecker:
                         print(info, file=f)
                 elif not(path):
                     print(info)
-                    
