@@ -1,36 +1,35 @@
-from typing import List
+from argparse import Namespace
+from typing import List, Optional
 import time
 from beholder.fetcher import WebFetcher
 from beholder.analyzer.file_manager import FileManager
+from beholder.file_comparator.comparator_factory import ComparatorFactory
 from beholder.file_comparator.comparators import FileComparator
-from argparse import Namespace
+from beholder.file_comparator.reporter_factory import ReporterFactory
 
 
 class StateChecker:
     comparator: FileComparator
+    fetcher: WebFetcher
+    sites: List[str]
+    time: int
+    output_path: Optional[str] = None
 
-    def __init__(self, comparator: FileComparator):
-        self.comparator = comparator
+    def __init__(self, sites: List[str], opts: Namespace):
+        self.sites = sites
+        self.time = opts.time
+        self.comparator = ComparatorFactory.create(opts.show_diffs)
+        self.reporter = ReporterFactory.create(opts.output_path)
+        self.file_manager = FileManager(sites)
+        self.fetcher = WebFetcher()
 
-    def run(self, opts: Namespace, sites: List[str]) -> None:
-        fetcher = WebFetcher()
-        manager = FileManager(sites)
-        while True:
-            for addr in sites:
-                latest_path = manager.latest_path(addr)
-                fetcher.fetch(addr, latest_path)
-            time.sleep(opts.time)
-            for addr in sites:
-                latest_path = manager.latest_path(addr)
-                chall_path = manager.chall_path(addr)
-                fetcher.fetch(addr, chall_path)
-                cmp_res = self.comparator.compare(latest_path, chall_path)
-                eq = cmp_res.equal
-                info = ""
-                if not(eq):
-                    info = cmp_res.__str__(addr)
-                if opts.output_path and info:
-                    with open(str(opts.output_path), mode='a') as f:
-                        f.write(info)
-                elif not(opts.output_path):
-                    print(info)
+    def run(self) -> None:
+        while 1:
+            for site in self.sites:
+                latest_path = self.file_manager.latest_path(site)
+                chall_path = self.file_manager.chall_path(site)
+                self.fetcher.fetch(site, chall_path)
+                res = self.comparator.compare(latest_path, chall_path)
+                if not res.equal:
+                    self.reporter.report(site, res)
+            time.sleep(self.time)
