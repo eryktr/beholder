@@ -14,8 +14,6 @@ class StateChecker:
     def run(self, path: str, t: int, sites: List[str]) -> None:
         fetcher = WebFetcher()
         manager = FileManager(sites)
-        if path:
-            output = path
         while True:
             for addr in sites:
                 l_path = manager.latest_path(addr)
@@ -35,7 +33,7 @@ class StateChecker:
                         for diff in differences:
                             info += diff
                 if path and info:
-                    with open(output, mode='a') as f:
+                    with open(path, mode='a') as f:
                         print(info, file=f)
                 elif not(path):
                     print(info)
