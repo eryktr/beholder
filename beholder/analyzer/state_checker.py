@@ -1,8 +1,9 @@
 from typing import List
 import time
-from beholder.__doc__fetcher import WebFetcher
+from beholder.fetcher import WebFetcher
 from beholder.analyzer.file_manager import FileManager
 from beholder.file_comparator.comparators import FileComparator
+from argparse import Namespace
 
 
 class StateChecker:
@@ -11,29 +12,25 @@ class StateChecker:
     def __init__(self, comparator: FileComparator):
         self.comparator = comparator
 
-    def run(self, path: str, t: int, sites: List[str]) -> None:
+    def run(self, opts: Namespace, sites: List[str]) -> None:
         fetcher = WebFetcher()
         manager = FileManager(sites)
         while True:
             for addr in sites:
-                l_path = manager.latest_path(addr)
-                fetcher.fetch(addr, l_path)
-            time.sleep(t)
+                latest_path = manager.latest_path(addr)
+                fetcher.fetch(addr, latest_path)
+            time.sleep(opts.time)
             for addr in sites:
-                l_path = manager.latest_path(addr)
-                c_path = manager.chall_path(addr)
-                fetcher.fetch(addr, c_path)
-                cmp = self.comparator.compare(c_path, l_path)
-                eq = cmp.equal
+                latest_path = manager.latest_path(addr)
+                chall_path = manager.chall_path(addr)
+                fetcher.fetch(addr, chall_path)
+                cmp_res = self.comparator.compare(latest_path, chall_path)
+                eq = cmp_res.equal
                 info = ""
                 if not(eq):
-                    info = "Found changes on website:" + addr
-                    if 'diffs' in vars(cmp):
-                        differences = self.comparator.compare(c_path, l_path).diffs
-                        for diff in differences:
-                            info += diff
-                if path and info:
-                    with open(path, mode='a') as f:
-                        print(info, file=f)
-                elif not(path):
+                    info = cmp_res.__str__(addr)
+                if opts.output_path and info:
+                    with open(str(opts.output_path), mode='a') as f:
+                        f.write(info)
+                elif not(opts.output_path):
                     print(info)

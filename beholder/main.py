@@ -1,21 +1,21 @@
 from sys import argv
-import beholder.argparser as parser
-import beholder.cfg_reader as reader
-import beholder.opts_validator as validator
-import beholder.analyzer.state_checker as checker
-import beholder.file_comparator.comparison_types as types
+import beholder.argparser as argparser
+import beholder.cfg_reader as cfg_reader
+import beholder.opts_validator as opts_validator
+import beholder.analyzer.state_checker as state_checker
+import beholder.file_comparator.comparison_types as comparison_types
 
 
 def main():
-    args = parser.parse(argv[1:])
-    validator.validate_opts(args)
-    sites = reader.parse_file(args.config_path)
-    reader.validate_websites(sites)
-    if args.show_diffs:
-        new_checker = checker.StateChecker(types.WithDiffsComparison())
+    opts = argparser.parse(argv[1:])
+    opts_validator.validate_opts(opts)
+    sites = cfg_reader.parse_file(opts.config_path)
+    cfg_reader.validate_websites(sites)
+    if opts.show_diffs:
+        checker = state_checker.StateChecker(comparison_types.WithDiffsComparison())
     else:
-        new_checker = checker.StateChecker(types.SimpleComparison())
-    new_checker.run(str(args.output_path), args.time, sites)
+        checker = state_checker.StateChecker(comparison_types.SimpleComparison())
+    checker.run(opts, sites)
 
 
 if __name__ == '__main__':
