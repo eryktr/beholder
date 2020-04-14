@@ -9,4 +9,4 @@ class WebFetcher:
         res = requests.get(addr)
         if res.status_code not in const.ALLOWED_STATCODES:
             raise errors.IncorrectStatusError(addr, res.status_code)
-        path.write_text(res.text)
+        path.write_text(res.text, encoding='utf-8')
