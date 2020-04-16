@@ -2,6 +2,8 @@ from typing import List
 
 
 class IncorrectWebsitesError(Exception):
+    __slots__ = ('sites',)
+
     sites: List[str]
     msg: str = "Some of the websites you provided are invalid"
 
@@ -11,6 +13,8 @@ class IncorrectWebsitesError(Exception):
 
 
 class IncorrectStatusError(Exception):
+    __slots__ = ('sites', 'status_code', 'msg')
+
     addr: str
     status_code: int
     msg: str

@@ -1,5 +1,7 @@
-import pytest
 import pathlib
+
+import pytest
+
 import beholder.argparser as argparser
 import beholder.const as const
 

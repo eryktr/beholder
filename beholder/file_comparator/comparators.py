@@ -1,9 +1,12 @@
-from beholder.file_comparator.comparison_types import ComparisonType
-from beholder.file_comparator.comparison_results import ComparisonResult
 from pathlib import Path
+
+from beholder.file_comparator.comparison_results import ComparisonResult
+from beholder.file_comparator.comparison_types import ComparisonType
 
 
 class FileComparator:
+    __slots__ = ("comparison_type",)
+
     comparison_type: ComparisonType
 
     def __init__(self, comparison_type: ComparisonType):

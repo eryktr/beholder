@@ -1,9 +1,11 @@
-from typing import List
 from pathlib import Path
 from tempfile import mkdtemp
+from typing import List
 
 
 class FileManager:
+    __slots__ = ('_temp_dir', '_lut')
+
     _temp_dir: Path
     _lut: dict
 

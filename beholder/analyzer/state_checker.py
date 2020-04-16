@@ -1,18 +1,24 @@
+import time
 from argparse import Namespace
 from typing import List, Optional
-import time
-from beholder.fetcher import WebFetcher
+
 from beholder.analyzer.file_manager import FileManager
+from beholder.fetcher import WebFetcher
 from beholder.file_comparator.comparator_factory import ComparatorFactory
 from beholder.file_comparator.comparators import FileComparator
 from beholder.file_comparator.reporter_factory import ReporterFactory
+from beholder.file_comparator.reporters import Reporter
 
 
 class StateChecker:
+    __slots__ = ('comparator', 'fetcher', 'sites', 'time', 'reporter', 'file_manager')
+
     comparator: FileComparator
     fetcher: WebFetcher
     sites: List[str]
     time: int
+    reporter: Reporter
+    file_manager: FileManager
     output_path: Optional[str] = None
 
     def __init__(self, sites: List[str], opts: Namespace):
@@ -36,7 +42,7 @@ class StateChecker:
                     latest_path.write_text(chall_path.read_text())
             time.sleep(self.time)
 
-    def _download_websites(self):
+    def _download_websites(self) -> None:
         for site in self.sites:
             path = self.file_manager.latest_path(site)
             self.fetcher.fetch(site, path)

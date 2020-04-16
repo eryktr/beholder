@@ -1,4 +1,5 @@
 import pytest
+
 import beholder.opts_validator as validator
 
 

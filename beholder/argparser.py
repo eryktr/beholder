@@ -1,6 +1,7 @@
 from argparse import ArgumentParser, Namespace, ArgumentDefaultsHelpFormatter
-from typing import List
 from pathlib import Path
+from typing import List
+
 import beholder.const as const
 
 _CFG_HELP = "Path to the config file containing website addresses."
