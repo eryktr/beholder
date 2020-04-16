@@ -2,6 +2,7 @@ import abc
 import difflib
 import filecmp
 from pathlib import Path
+
 from beholder.file_comparator.comparison_results import (
     ComparisonResult, SimpleComparisonResult, WithDiffsComparisonResult,
 )
