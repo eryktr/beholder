@@ -22,4 +22,3 @@ def test_fetch_correct(mocker, monkeypatch):
     monkeypatch.setattr(pathlib.Path, 'write_text', mocker.Mock())
     fetcher = mocker.Mock()
     fetcher.fetch('www.hello-world.com', pathlib.Path() / 'file.html')
-
