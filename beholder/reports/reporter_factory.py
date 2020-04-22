@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
-from beholder.file_comparator.reporters import BaseReporter, StdoutReporter, FileReporter, Reporter
+from beholder.reports.reporters import BaseReporter, StdoutReporter, FileReporter, Reporter
 
 
 class ReporterFactory:

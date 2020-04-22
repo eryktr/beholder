@@ -1,10 +1,6 @@
 import pytest
 
 from beholder.file_comparator.comparators import FileComparator
-from beholder.file_comparator.comparison_results import (
-    SimpleComparisonResult, WithDiffsComparisonResult,
-)
-from beholder.file_comparator.comparison_types import SimpleComparison, WithDiffsComparison
 
 
 @pytest.fixture
@@ -61,43 +57,28 @@ def nonequal_files_pair(tmp_path):
 
 def test_simple_comparator_equal_files(equal_files_pair):
     f1, f2 = equal_files_pair
-    comparator = FileComparator(comparison_type=SimpleComparison())
+    comparator = FileComparator()
 
     result = comparator.compare(f1, f2)
 
-    assert isinstance(result, SimpleComparisonResult)
-    assert result.equal is True
-
-
-def test_simple_comparator_nonequal_files(nonequal_files_pair):
-    f1, f2 = nonequal_files_pair
-    comparator = FileComparator(comparison_type=SimpleComparison())
-
-    result = comparator.compare(f1, f2)
-
-    assert isinstance(result, SimpleComparisonResult)
-    assert result.equal is False
+    assert result.diffs == []
 
 
 def test_with_diffs_comparator_equal_files(equal_files_pair):
     f1, f2 = equal_files_pair
-    comparator = FileComparator(comparison_type=WithDiffsComparison())
+    comparator = FileComparator()
 
     result = comparator.compare(f1, f2)
 
-    assert isinstance(result, WithDiffsComparisonResult)
-    assert result.equal is True
     assert result.diffs == []
 
 
 def test_with_diffs_comparator_nonequal_files(nonequal_files_pair):
     f1, f2 = nonequal_files_pair
-    comparator = FileComparator(comparison_type=WithDiffsComparison())
+    comparator = FileComparator()
 
     result = comparator.compare(f1, f2)
 
-    assert isinstance(result, WithDiffsComparisonResult)
-    assert result.equal is False
     assert result.diffs == [
         '--- \n',
         '+++ \n',
