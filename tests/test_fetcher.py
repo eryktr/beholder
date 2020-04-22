@@ -20,5 +20,6 @@ def test_fetch_correct(mocker, monkeypatch):
     res_mock = mocker.Mock(status_code=200)
     monkeypatch.setattr(requests, 'get', lambda addr: res_mock)
     monkeypatch.setattr(pathlib.Path, 'write_text', mocker.Mock())
-    fetcher = WebFetcher()
+    fetcher = mocker.Mock()
     fetcher.fetch('www.hello-world.com', pathlib.Path() / 'file.html')
+

@@ -2,8 +2,7 @@ from bs4 import BeautifulSoup
 from lxml.html.clean import Cleaner
 
 
-def process(res_content: str) -> str:
-    cleaner = Cleaner()
+def process(cleaner: Cleaner, res_content: str) -> str:
     cleaner.javascript = True
     cleaner.style = True
     clean_text = cleaner.clean_html(res_content)
