@@ -2,19 +2,17 @@ import abc
 from datetime import datetime
 from pathlib import Path
 
-from beholder.file_comparator.comparison_results import ComparisonResult
-
 
 class Reporter(abc.ABC):
     @abc.abstractmethod
-    def report(self, site: str, result: ComparisonResult) -> str:
+    def report(self, site: str, report: str) -> str:
         pass
 
 
 class BaseReporter(Reporter):
-    def report(self, site: str, result: ComparisonResult) -> str:
+    def report(self, site: str, report: str) -> str:
         now = datetime.now()
-        return f"{now} - {site} - {result}"
+        return f"{now} - {site} - {report}"
 
 
 class StdoutReporter(Reporter):
@@ -23,8 +21,8 @@ class StdoutReporter(Reporter):
     def __init__(self, reporter: Reporter):
         self.reporter = reporter
 
-    def report(self, site: str, result: ComparisonResult) -> str:
-        report = self.reporter.report(site, result)
+    def report(self, site: str, report: str) -> str:
+        report = self.reporter.report(site, report)
         print(report)
         return report
 
@@ -37,8 +35,8 @@ class FileReporter(Reporter):
         self.reporter = reporter
         self.path = path
 
-    def report(self, site: str, result: ComparisonResult) -> str:
-        report = self.reporter.report(site, result)
+    def report(self, site: str, report: str) -> str:
+        report = self.reporter.report(site, report)
         with self.path.open(mode='a') as fd:
             fd.write(report)
         return report
