@@ -39,9 +39,11 @@ def test_processor_correct():
 </body>
 </html>
 '''
-    result = " Gall Anonim Witaj na mojej stronie! Główna "
-    result += "O mnie Kontakt Dane kontaktowe Telefon komórkowy: 124912481248 "
-    result += "Adres e-mail: example@example.com "
+    result = "".join([
+      " Gall Anonim Witaj na mojej stronie! Główna ",
+      "O mnie Kontakt Dane kontaktowe Telefon komórkowy: 124912481248 ",
+      "Adres e-mail: example@example.com "
+      ])
     cleaner = Cleaner()
     processed_html = process(cleaner, content)
     compact_html = re.sub("[\n' ']+", ' ', processed_html)
