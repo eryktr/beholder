@@ -6,7 +6,7 @@ from setuptools import find_namespace_packages
 long_description = Path("README.md").read_text()
 
 setuptools.setup(
-    name="beholder",
+    name="beholderteam-beholder",
     version="0.1.0",
     author="beholder-devteam",
     maintainer="beholder_devteam",
