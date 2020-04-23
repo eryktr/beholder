@@ -42,7 +42,7 @@ def test_processor_correct():
     result = "".join([
       " Gall Anonim Welcome to my webpage! Main site ",
       "About Contact Contact details Phone number: 124912481248 ",
-      "E-mail: example@example.com "
+      "E-mail: example@example.com ",
       ])
     cleaner = Cleaner()
     processed_html = process(cleaner, content)
