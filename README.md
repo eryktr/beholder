@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/eryktr/beholder/branch/master/graph/badge.svg?token=A0N7L9YHXS)](https://codecov.io/gh/eryktr/beholder)
+
 # beholder
 A tool to inform about latest updates on websites it tracks
 
