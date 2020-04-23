@@ -17,7 +17,7 @@ echo "--------------------------------------------------------------------------
 
 echo "Now it's time to check if the unit tests are passing...";
 pytest -vv --durations=$DURATIONS --cov="$PYTHONPATH/beholder" --cov-config="$PYTHONPATH/.coveragerc" \
-  --cov-report term-missing --rootdir="$PYTHONPATH";
+  --cov-report=xml --rootdir="$PYTHONPATH";
 
 ok=$?;
 if [ $ok -ne 0 ]; then
