@@ -27,7 +27,7 @@ setuptools.setup(
             'lxml==4.5.0',
             'mccabe==0.6.1',
             'more-itertools==8.2.0',
-            'mypy==0.770'
+            'mypy==0.770',
             'mypy-extensions==0.4.3',
             'packaging==20.3',
             'pluggy==0.13.1',
