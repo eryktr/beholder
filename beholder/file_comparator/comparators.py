@@ -1,16 +1,21 @@
+import difflib
+import filecmp
+from dataclasses import dataclass
 from pathlib import Path
+from typing import List
 
-from beholder.file_comparator.comparison_results import ComparisonResult
-from beholder.file_comparator.comparison_types import ComparisonType
+
+@dataclass
+class ComparisonResult:
+    diffs: List[str]
 
 
 class FileComparator:
-    __slots__ = ("comparison_type",)
-
-    comparison_type: ComparisonType
-
-    def __init__(self, comparison_type: ComparisonType):
-        self.comparison_type = comparison_type
-
     def compare(self, file1: Path, file2: Path) -> ComparisonResult:
-        return self.comparison_type.compare(file1, file2)
+        equal = filecmp.cmp(str(file1), str(file2))
+        if equal:
+            return ComparisonResult([])
+        content1 = file1.read_text().split("\n")
+        content2 = file2.read_text().split("\n")
+        diffs = difflib.unified_diff(content1, content2)
+        return ComparisonResult([*diffs])

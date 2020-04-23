@@ -1,10 +1,6 @@
 name: Python application
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -20,7 +16,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -e .[dev]
     - name: Verify code
       run: |
         ./scripts/verify_code.sh
+    - name: Measure coverage
+      run: |
+        bash <(curl -s https://codecov.io/bash)
+      env:
+        CODECOV_TOKEN: b8057a87-7a42-47a7-8865-bc2ae35632fd
