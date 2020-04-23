@@ -17,21 +17,21 @@ def test_processor_correct():
 <body>
   <div id="container">
     <header>
-      <h1>Witaj na mojej stronie!</h1>
+      <h1>Welcome to my webpage!</h1>
     </header>
     <div id="content">
       <nav>
         <div class="MenuWrap">
-          <a href="./index.html" class="FirstItem">Główna</a>
-          <a href="./about.html" class="ListItem">O mnie</a>
-          <a href="./contact.html" class="SelectedLastItem">Kontakt</a>
+          <a href="./index.html" class="FirstItem">Main site</a>
+          <a href="./about.html" class="ListItem">About</a>
+          <a href="./contact.html" class="SelectedLastItem">Contact</a>
         </div>
       </nav>
       <main>
-        <h2>Dane kontaktowe</h2>
-        <h3>Telefon komórkowy:</h3>
+        <h2>Contact details</h2>
+        <h3>Phone number:</h3>
         <p>124912481248</p>
-        <h3>Adres e-mail: example@example.com</h3>
+        <h3>E-mail: example@example.com</h3>
         <script src="./email.js"></script>
       </main>
     </div>
@@ -40,9 +40,9 @@ def test_processor_correct():
 </html>
 '''
     result = "".join([
-      " Gall Anonim Witaj na mojej stronie! Główna ",
-      "O mnie Kontakt Dane kontaktowe Telefon komórkowy: 124912481248 ",
-      "Adres e-mail: example@example.com "
+      " Gall Anonim Welcome to my webpage! Main site ",
+      "About Contact Contact details Phone number: 124912481248 ",
+      "E-mail: example@example.com "
       ])
     cleaner = Cleaner()
     processed_html = process(cleaner, content)
