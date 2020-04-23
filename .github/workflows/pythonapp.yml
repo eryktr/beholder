@@ -24,3 +24,7 @@ jobs:
     - name: Verify code
       run: |
         ./scripts/verify_code.sh
+    - name: Measure coverage
+      run: |
+        bash <(curl -s https://codecov.io/bash)
+      env: CODECOV_TOKEN="b8057a87-7a42-47a7-8865-bc2ae35632fd"
