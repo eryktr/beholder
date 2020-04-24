@@ -4,6 +4,7 @@ omit =
     env
     venv
     */__init__.py
+    beholder/main.py
 
 [report]
 exclude_lines =

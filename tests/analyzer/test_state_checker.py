@@ -39,7 +39,7 @@ def create_state_checker(time, output_path, show_diffs, config_path):
 
 @pytest.mark.integration
 def test_state_checker(monkeypatch):
-    state_checker = create_state_checker(1, None, False, Mock())
+    state_checker = create_state_checker(0.2, None, False, Mock())
     monkeypatch.setattr(WebFetcher, 'fetch', lambda self, site, path: fetch(self, site, path))
     monkeypatch.setattr(StateChecker, 'run', lambda self: run(self))
     state_checker.run()
