@@ -1,42 +1,41 @@
-import abc
-from datetime import datetime
 from pathlib import Path
+from typing import Optional, Protocol, List
 
 
-class Reporter(abc.ABC):
-    @abc.abstractmethod
-    def report(self, site: str, report: str) -> str:
+class Handler(Protocol):
+    def handle(self, report: str) -> None:
         pass
 
 
-class BaseReporter(Reporter):
-    def report(self, site: str, report: str) -> str:
-        now = datetime.now()
-        return f"{now} - {site} - {report}"
-
-
-class StdoutReporter(Reporter):
-    reporter: Reporter
-
-    def __init__(self, reporter: Reporter):
-        self.reporter = reporter
-
-    def report(self, site: str, report: str) -> str:
-        report = self.reporter.report(site, report)
+class StdoutHandler:
+    def handle(self, report: str) -> None:
         print(report)
-        return report
 
 
-class FileReporter(Reporter):
-    reporter: Reporter
-    file: Path
+class FileHandler:
+    fpath: Path
 
-    def __init__(self, reporter: Reporter, path: Path):
-        self.reporter = reporter
-        self.path = path
+    def __init__(self, fpath: Path):
+        self.fpath = fpath
 
-    def report(self, site: str, report: str) -> str:
-        report = self.reporter.report(site, report)
-        with self.path.open(mode='a') as fd:
+    def handle(self, report: str) -> None:
+        with self.fpath.open(mode="a") as fd:
             fd.write(report)
-        return report
+
+
+class Reporter:
+    handlers: List[Handler]
+
+    def __init__(self, handlers: list):
+        self.handlers = handlers
+
+    def report(self, report: str) -> None:
+        for handler in self.handlers:
+            handler.handle(report)
+
+    @classmethod
+    def get(cls, output_path: Optional[Path] = None):
+        handlers: List[Handler] = [StdoutHandler()]
+        if output_path:
+            handlers.append(FileHandler(output_path))
+        return cls(handlers)
