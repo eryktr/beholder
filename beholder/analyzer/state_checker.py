@@ -1,12 +1,11 @@
 import time
 from argparse import Namespace
-from typing import List, Optional
+from typing import List
 
 import beholder.reports.report_builder as report_builder
 from beholder.analyzer.file_manager import FileManager
 from beholder.fetcher import WebFetcher
 from beholder.file_comparator.comparators import FileComparator
-from beholder.reports.reporter_factory import ReporterFactory
 from beholder.reports.reporters import Reporter
 
 
@@ -18,17 +17,15 @@ class StateChecker:
     reporter: Reporter
     file_manager: FileManager
     show_diffs: bool = False
-    output_path: Optional[str] = None
 
     def __init__(self, sites: List[str], opts: Namespace):
         self.sites = sites
         self.time = opts.time
+        self.show_diffs = opts.show_diffs
         self.comparator = FileComparator()
-        self.reporter = ReporterFactory.create(opts.output_path)
+        self.reporter = Reporter.get(getattr(opts, 'output_path', None))
         self.file_manager = FileManager(sites)
         self.fetcher = WebFetcher()
-        self.output_path = opts.output_path
-        self.show_diffs = opts.show_diffs
 
     def run(self) -> None:
         self._download_websites()
@@ -49,5 +46,5 @@ class StateChecker:
         res = self.comparator.compare(latest_path, chall_path)
         if res.diffs:
             report = report_builder.build(site, res, with_diffs=self.show_diffs)
-            self.reporter.report(site, report)
+            self.reporter.report(report)
             latest_path.write_text(chall_path.read_text())
