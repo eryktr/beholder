@@ -25,3 +25,7 @@ jobs:
         bash <(curl -s https://codecov.io/bash)
       env:
         CODECOV_TOKEN: b8057a87-7a42-47a7-8865-bc2ae35632fd
+    - name: Find uncovered lines
+      run: |
+        pytest --cov="beholder" --cov-config=".coveragerc" \
+        --cov-report=term-missing --rootdir=.;    
