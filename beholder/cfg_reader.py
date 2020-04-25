@@ -3,7 +3,7 @@ from typing import List, Set
 
 
 def parse_file(path: Path) -> List[str]:
-    return _uniq([line for line in path.read_text().split('\n') if line])
+    return _uniq([site for line in path.read_text().split('\n') if (site:=line.strip())])
 
 
 def _uniq(lst: List[str]) -> List[str]:

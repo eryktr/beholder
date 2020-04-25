@@ -33,7 +33,7 @@ setuptools.setup(
             'pluggy==0.13.1',
             'py==1.8.1',
             'pycodestyle==2.5.0',
-            'pyflakes==2.1.1',
+            'pyflakes==2.2.0',
             'pyparsing==2.4.6',
             'pytest==5.4.1',
             'pytest-mock==2.0.0',
