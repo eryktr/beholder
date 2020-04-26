@@ -3,8 +3,18 @@
 # beholder
 A tool to inform about latest updates on websites it tracks
 
-# Overview
-To be done
+# Usage
+    usage: beholder [-h] [-t TIME] [-o OUTPUT_PATH] [-d] config_path
+
+    positional arguments:
+      config_path           Path to the config file containing website addresses.
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -t TIME, --time TIME  Number of seconds between subsequent checks. (default: 5)
+      -o OUTPUT_PATH, --output_path OUTPUT_PATH
+                            File where the session should be dumped. (default: None)
+      -d, --show_diffs      Display not only if something changes but also what changes. (default: False)
 
 # Python requirement
 Beholder requires Python >= 3.8.0.
