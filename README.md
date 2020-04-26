@@ -61,6 +61,22 @@ Session with diffs:
 
 
      DSJ3 Online
+     
+     2020-04-26 23:55:14.683506 - http://www.mediamond.fi/ - Website has changed.
+     ---
+
+     +++
+
+     @@ -195,7 +195,7 @@
+
+
+     DSJ4 Online
+
+     -       Currently playing: 3
+     +       Currently playing: 4
+
+
+     DSJ3 Online
 
 
 
