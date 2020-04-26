@@ -4,7 +4,7 @@
 A tool to inform about latest updates on websites it tracks
 
 # Overview
-TBD
+To be done
 
 # Python requirement
 Beholder requires Python >= 3.8.0.
