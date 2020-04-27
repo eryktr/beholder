@@ -41,8 +41,8 @@ class StateChecker:
 
     def _check_site(self, site: Site) -> None:
         self.downloader.download_updated(site)
-        latest_path = site.latest_path
-        chall_path = site.chall_path
+        latest_path = site.reference_path
+        chall_path = site.update_path
         res = self.comparator.compare(latest_path, chall_path)
         report = report_builder.build(site.addr, res, with_diffs=self.show_diffs)
         self.reporter.report(report)

@@ -9,7 +9,7 @@ class Downloader:
         self.fetcher = fetcher
 
     def download_reference(self, site: Site) -> None:
-        self.fetcher.fetch(site.addr, site.latest_path)
+        self.fetcher.fetch(site.addr, site.reference_path)
 
     def download_updated(self, site: Site) -> None:
-        self.fetcher.fetch(site.addr, site.chall_path)
+        self.fetcher.fetch(site.addr, site.update_path)
