@@ -32,7 +32,7 @@ setuptools.setup(
             'packaging==20.3',
             'pluggy==0.13.1',
             'py==1.8.1',
-            'pycodestyle==2.6.0a',
+            'pycodestyle==2.6.0a1',
             'pyflakes==2.2.0',
             'pyparsing==2.4.6',
             'pytest==5.4.1',
