@@ -40,10 +40,10 @@ def testcases():
         False,
     )
     reports = (
-        "",
-        "NOW - https://site2.pl - Website has changed.\ndiff1",
-        "NOW - https://site3.us - Website has changed.\ndiff2\ndiff3",
-        "NOW - https://site4.uk - Website has changed.\n",
+        "NOW - https://site1.com - Website has not changed.",
+        "NOW - https://site2.pl - Website has changed.diff1",
+        "NOW - https://site3.us - Website has changed.diff2\ndiff3",
+        "NOW - https://site4.uk - Website has changed.",
     )
 
     return [

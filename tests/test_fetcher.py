@@ -4,8 +4,8 @@ import pytest
 import requests
 
 from beholder.errors import IncorrectStatusError
-from beholder.fetcher import WebFetcher
 import beholder.processor as processor
+from beholder.fetcher.fetcher import WebFetcher
 
 
 def test_fetch_raises_for_invalid_statcode(mocker, monkeypatch):

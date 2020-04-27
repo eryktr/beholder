@@ -25,4 +25,4 @@ def test_reporter_with_file_handler_and_stdout_handler(capsys):
     reporter.report(report)
 
     assert capsys.readouterr().out == f"{report}\n"
-    assert output_path.captured == report
+    assert output_path.captured == "".join([report, "\n"])
