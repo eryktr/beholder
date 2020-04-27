@@ -20,7 +20,7 @@ class FileHandler:
 
     def handle(self, report: str) -> None:
         with self.fpath.open(mode="a") as fd:
-            fd.write(report)
+            fd.write("".join([report, "\n"]))
 
 
 class Reporter:

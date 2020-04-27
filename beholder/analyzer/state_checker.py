@@ -46,7 +46,7 @@ class StateChecker:
         chall_path = self.file_manager.chall_path(site)
         self.fetcher.fetch(site, chall_path)
         res = self.comparator.compare(latest_path, chall_path)
+        report = report_builder.build(site, res, with_diffs=self.show_diffs)
+        self.reporter.report(report)
         if res.diffs:
-            report = report_builder.build(site, res, with_diffs=self.show_diffs)
-            self.reporter.report(report)
-            latest_path.write_text(chall_path.read_text())
+            latest_path.write_text(chall_path.read_text('utf-8'), encoding='utf-8')
