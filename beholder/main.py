@@ -12,7 +12,7 @@ def main():
     opts_validator.validate_opts(opts)
     sites = cfg_reader.parse_file(opts.config_path)
     cfg_validator.validate_websites(sites)
-    checker = state_checker.StateChecker(sites, opts)
+    checker = state_checker.StateChecker(sites, opts, num_threads=len(sites))
     checker.run()
 
 

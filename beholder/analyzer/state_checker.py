@@ -1,5 +1,6 @@
 import time
 from argparse import Namespace
+from multiprocessing.dummy import Pool as ThreadPool
 from typing import List
 
 import beholder.reports.report_builder as report_builder
@@ -17,8 +18,9 @@ class StateChecker:
     reporter: Reporter
     file_manager: FileManager
     show_diffs: bool = False
+    thread_pool: ThreadPool
 
-    def __init__(self, sites: List[str], opts: Namespace):
+    def __init__(self, sites: List[str], opts: Namespace, num_threads=1):
         self.sites = sites
         self.time = opts.time
         self.show_diffs = opts.show_diffs
@@ -26,12 +28,12 @@ class StateChecker:
         self.reporter = Reporter.get(getattr(opts, 'output_path', None))
         self.file_manager = FileManager(sites)
         self.fetcher = WebFetcher()
+        self.thread_pool = ThreadPool(num_threads)
 
     def run(self) -> None:
         self._download_websites()
         while 1:
-            for site in self.sites:
-                self._check_site(site)
+            self.thread_pool.map(self._check_site, self.sites)
             time.sleep(self.time)
 
     def _download_websites(self) -> None:
