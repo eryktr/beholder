@@ -22,7 +22,7 @@ setuptools.setup(
             'beautifulsoup4==4.9.0',
             'coverage==5.0.4',
             'entrypoints==0.3',
-            'flake8==3.7.9',
+            'flake8==3.8.0a1',
             'flake8-commas==2.0.0',
             'lxml==4.5.0',
             'mccabe==0.6.1',
