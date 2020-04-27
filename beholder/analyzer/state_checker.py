@@ -20,7 +20,7 @@ class StateChecker:
     show_diffs: bool = False
     thread_pool: ThreadPool
 
-    def __init__(self, sites: List[str], opts: Namespace, num_threads=1):
+    def __init__(self, sites: List[str], opts: Namespace, num_threads: int = 1):
         self.sites = sites
         self.time = opts.time
         self.show_diffs = opts.show_diffs
