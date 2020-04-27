@@ -1,6 +1,6 @@
 from sys import argv
 
-import beholder.analyzer.state_checker as state_checker
+from beholder.analyzer import state_checker as state_checker
 import beholder.argparser as argparser
 import beholder.cfg_reader as cfg_reader
 import beholder.cfg_validator as cfg_validator
