@@ -1,61 +1,34 @@
+import beholder.reports.report_builder as report_builder
+from beholder.analyzer.site import Site
 from beholder.analyzer.state_checker import StateChecker
-# from beholder.analyzer.site import Site
-from unittest.mock import Mock
-from typing import NamedTuple, List
-from argparse import Namespace
+from beholder.file_comparator.comparators import FileComparator
+from beholder.file_comparator.comparators import ComparisonResult
 
-import pytest
+from pathlib import Path
 
 
-class TestCase(NamedTuple):
-    sites: List[str]
-    sites_first_content: List[str]
-    sites_second_content: List[str]
-    with_diffs: bool
+def my_check_site(site: Site, with_diffs: bool) -> ComparisonResult:
+    latest_path = site.reference_path
+    chall_path = site.update_path
+    comparator = FileComparator()
+    res = comparator.compare(latest_path, chall_path)
+    report = report_builder.build(site.addr, res, with_diffs)
+    return res, report
 
 
-def safezip(*args):
-    if any(len(arg) != len(args[0]) for arg in args):
-        raise ValueError("All iterables must be of the same length.")
-    return zip(*args)
-
-
-def testcases():
-    sites = ([
-         "https://site1.com",
-         "https://site2.pl",
-        ],
-    )
-    sites_first_content_list = ([
-        "<p>Current number of DSJ4 players: 7</p><p>Current number of DSJ3 players: 5</p>",
-        "<p>Current number of DSJ4 players: 5</p><p>Current number of DSJ3 players: 5</p>",
-    ],
-    )
-    sites_second_content_list = ([
-        "<p>Current number of DSJ4 players: 3</p><p>Current number of DSJ3 players: 6</p>",
-        "<p>Current number of DSJ4 players: 5</p><p>Current number of DSJ3 players: 5</p>",
-    ],
-    )
-    with_diffs_list = ([
-        True,
-    ],
-    )
-
-    return [
-        TestCase(sites=sites, sites_first_content=first_content,
-                 sites_second_content=second_content, with_diffs=with_diffs)
-        for sites, first_content, second_content, with_diffs
-        in safezip(sites, sites_first_content_list, sites_second_content_list, with_diffs_list)
-    ]
-
-
-@pytest.mark.parametrize("testcase", testcases())
-def test_state_checker(monkeypatch, testcase):
-    diffs = testcase.with_diffs[0]
-    websites = testcase.sites
-    opts = Namespace(config_path=Mock(),
-                     output_path=None,
-                     show_diffs=diffs,
-                     time=5)
-    checker = StateChecker(websites, opts, 1)
-    assert [site[0] for site in checker.sites] == websites
+def test_check_site(mocker, paths):
+    site = Site(mocker.Mock(),
+                Path("tests") / "test_files" / "1o.html",
+                Path("tests") / "test_files" / "1n.html")
+    cfg_file, out_file = paths
+    sh_diffs = False
+    opts = mocker.Mock(config_path=cfg_file, output_path=out_file, time=30, show_diffs=sh_diffs)
+    checker = StateChecker([site], opts, 1)
+    checker._check_site = my_check_site
+    site_check = my_check_site(site, sh_diffs)
+    assert site_check[0] == ComparisonResult(diffs=[
+                                                    '--- \n', '+++ \n',
+                                                    '@@ -1 +1 @@\n',
+                                                    '-<h1>Hello world!</h1>',
+                                                    '+<h2>World hello!</h2>'])
+    assert "Website has changed." in site_check[1]
