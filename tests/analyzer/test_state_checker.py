@@ -7,7 +7,7 @@ from beholder.file_comparator.comparators import ComparisonResult
 from pathlib import Path
 
 
-def my_check_site(site: Site, with_diffs: bool) -> ComparisonResult:
+def my_check_site(site, with_diffs):
     latest_path = site.reference_path
     chall_path = site.update_path
     comparator = FileComparator()
