@@ -30,5 +30,5 @@ def test_check_site(mocker, paths):
                                                     '--- \n', '+++ \n',
                                                     '@@ -1 +1 @@\n',
                                                     '-<h1>Hello world!</h1>',
-                                                    '+<h2>World hello!</h2>'])
+                                                    '+'])
     assert "Website has changed." in site_check[1]
