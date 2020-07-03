@@ -1,34 +1,27 @@
-import beholder.reports.report_builder as report_builder
 from beholder.analyzer.site import Site
 from beholder.analyzer.state_checker import StateChecker
-from beholder.file_comparator.comparators import FileComparator
-from beholder.file_comparator.comparators import ComparisonResult
-
 from pathlib import Path
 
-
-def my_check_site(site, with_diffs):
-    latest_path = site.reference_path
-    chall_path = site.update_path
-    comparator = FileComparator()
-    res = comparator.compare(latest_path, chall_path)
-    report = report_builder.build(site.addr, res, with_diffs)
-    return res, report
+import requests
+import beholder.processor as processor
+import beholder.reports.report_builder as report_builder
 
 
-def test_check_site(mocker, paths):
-    site = Site(mocker.Mock(),
-                Path("tests") / "test_files" / "1o.html",
-                Path("tests") / "test_files" / "1n.html")
+def test_check_site(mocker, paths, state_paths, monkeypatch):
     cfg_file, out_file = paths
-    sh_diffs = False
-    opts = mocker.Mock(config_path=cfg_file, output_path=out_file, time=30, show_diffs=sh_diffs)
+    old_file, new_file = state_paths
+    site = Site("dummy", old_file, new_file)
+    opts = mocker.Mock(config_path=cfg_file, output_path=out_file, time=30, show_diffs=False)
     checker = StateChecker([site], opts, 1)
-    checker._check_site = my_check_site
-    site_check = my_check_site(site, sh_diffs)
-    assert site_check[0] == ComparisonResult(diffs=[
-                                                    '--- \n', '+++ \n',
-                                                    '@@ -1 +1 @@\n',
-                                                    '-<h1>Hello world!</h1>',
-                                                    '+'])
-    assert "Website has changed." in site_check[1]
+
+    res_mock = mocker.Mock(status_code=200)
+    monkeypatch.setattr(requests, 'get', lambda addr: res_mock)
+    monkeypatch.setattr(Path, 'write_text', mocker.Mock())
+    monkeypatch.setattr(processor, 'process', mocker.Mock())
+
+    checker._check_site(site)
+    compare = checker.comparator.compare(site.reference_path, site.update_path)
+
+    assert "Website has not changed" in report_builder.build(site.addr,
+                                                             compare,
+                                                             with_diffs=False)
