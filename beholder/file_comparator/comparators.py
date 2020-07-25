@@ -15,7 +15,7 @@ class FileComparator:
         equal = filecmp.cmp(str(file1), str(file2))
         if equal:
             return ComparisonResult([])
-        content1 = file1.read_text().split("\n")
-        content2 = file2.read_text().split("\n")
+        content1 = file1.read_text(encoding='utf-8').split("\n")
+        content2 = file2.read_text(encoding='utf-8').split("\n")
         diffs = difflib.unified_diff(content1, content2)
         return ComparisonResult([*diffs])
