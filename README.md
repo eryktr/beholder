@@ -42,7 +42,7 @@ Standard session:
     2020-04-26 23:40:19.002276 - http://www.mediamond.fi/ - Website has changed.
     2020-04-26 23:43:23.244814 - http://www.mediamond.fi/ - Website has changed.
 
-Diffs session:
+Session with diffs:
  
     beholder -d file.txt
     
