@@ -1,61 +1,38 @@
-import pytest
-import time
-
-from unittest.mock import Mock
+from beholder.analyzer.site import Site
 from beholder.analyzer.state_checker import StateChecker
-from beholder.fetcher import WebFetcher
-from beholder.file_comparator.comparators import FileComparator, ComparisonResult
-from beholder.reports import report_builder
+from beholder.const import HTTPStatus
+from pathlib import Path
 
-name1 = 'site_a'
-name2 = 'site_b'
-
-
-def fetch(self, site, path):
-    path.write_text({
-        name1: 'content_1',
-        name2: 'content_2',
-    }[site])
-
-
-def run(self):
-    self._download_websites()
-    start = time.time()
-    while time.time() - start < 3 * self.time:
-        for site in self.sites:
-            self._check_site(site)
-        time.sleep(self.time)
-
-
-def create_state_checker(time, output_path, show_diffs, config_path):
-    sites = [name1, name2]
-    opts = Mock(
-        time=time,
-        output_path=output_path,
-        show_diffs=show_diffs,
-        config_path=config_path,
-    )
-    state_checker = StateChecker(sites, opts)
-    return state_checker
+import pytest
+import requests
+import beholder.processor as processor
+import beholder.reports.report_builder as report_builder
 
 
 @pytest.fixture
-def monkeypatched_state_checker(monkeypatch):
-    monkeypatch.setattr(WebFetcher, 'fetch', lambda self, site, path: fetch(self, site, path))
-    monkeypatch.setattr(StateChecker, 'run', lambda self: run(self))
+def state_paths(tmp_path):
+    old_file = tmp_path / '1o.html'
+    old_file.touch()
+    new_file = tmp_path / '1n.html'
+    new_file.touch()
+    return old_file, new_file
 
 
-def test_state_checker_no_diffs(monkeypatched_state_checker):
-    state_checker = create_state_checker(0.2, None, False, Mock())
-    state_checker.run()
+def test_check_site(mocker, paths, state_paths, monkeypatch):
+    cfg_file, out_file = paths
+    old_file, new_file = state_paths
+    opts = mocker.Mock(config_path=cfg_file, output_path=out_file, time=30, show_diffs=False)
+    sites = [Site("dummy", old_file, new_file)]
+    checker = StateChecker(sites, opts)
 
+    res_mock = mocker.Mock(status_code=HTTPStatus.OK)
+    simple_mock = mocker.Mock()
 
-def test_state_checker_diffs_found(monkeypatch, monkeypatched_state_checker):
-    state_checker = create_state_checker(0.2, None, False, Mock())
-    monkeypatch.setattr(
-        FileComparator,
-        'compare',
-        lambda self, path1, path2: ComparisonResult(diffs=['diff']),
-    )
-    monkeypatch.setattr(report_builder, 'build', lambda site, res, with_diffs: Mock())
-    state_checker.run()
+    monkeypatch.setattr(requests, "get", lambda addr: res_mock)
+    monkeypatch.setattr(Path, "write_text", simple_mock)
+    monkeypatch.setattr(processor, "process", simple_mock)
+
+    checker._check_site(sites[0])
+    res = checker.comparator.compare(sites[0].reference_path, sites[0].update_path)
+
+    assert "Website has not changed" in report_builder.build(sites[0].addr, res, with_diffs=False)
