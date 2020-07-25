@@ -30,7 +30,7 @@ In other words, file should contain valid website URLs, each of them separated b
 * your_nth_website - is a valid website
  
  # Examples of usage
-Content of file.txt:
+Text file content:
  
     http://www.mediamond.fi/
     https://eryktr.github.io/
